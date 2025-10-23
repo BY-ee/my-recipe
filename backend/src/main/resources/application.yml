@@ -1,9 +1,15 @@
 spring:
   # 스프링 관련 공통 설정
+  mvc:
+    servlet:
+      path: /api # 모든 요청 URL에 /api 접두사 추가
+
   application:
     name: my-recipe # 어플리케이션 이름
   config:
     import: "optional:file:./backend/application.secret.yml" # 외부 설정 파일 import
+  messages:
+    encoding: UTF-8 # 메시지 파일의 인코딩을 UTF-8로 설정
 
   # 데이터 소스 및 HikariCP(DB 커넥션 풀) 설정
   datasource:
@@ -14,7 +20,7 @@ spring:
 # MyBatis 설정
 mybatis:
   # classpath
-  mapper-locations: mappers/**/*.xml
+  mapper-locations: mapper/**/*.xml
   configuration:
     # DB-Java 필드명 매핑 (user_id (DB) -> userId (Java))
     map-underscore-to-camel-case: true
@@ -25,14 +31,15 @@ server:
   tomcat:
     connection-timeout: 5000 # 연결 타임아웃 (밀리초)
   error:
-    include-message: always
+    include-stacktrace: never # 예외 응답 body에 stacktrace 미포함
+    include-message: always   # 예외 응답 body에 message 항상 포함
     whitelabel:
-      enabled: false
+      enabled: true
 
 # 로깅 설정
 logging:
-  file:
-    name: ${LOG_PATH} # 로그 파일 경로 및 이름
+#  file:
+#    name: ${LOG_PATH} # 로그 파일 경로 및 이름
   level:
     com.myrecipe.mapper: trace # MyBatis SQL 쿼리 로깅
 
